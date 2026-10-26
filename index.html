@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المستكشفون المنسيون | Forgotten Explorers</title>
+<meta name="description" content="رحلة تفاعلية مع معدات ناسا التي بقيت على المريخ والقمر: استمع إلى قصصها، اختبر معلوماتك، واجمع نجومك.">
+<meta name="theme-color" content="#050816">
+<meta property="og:title" content="المستكشفون المنسيون">
+<meta property="og:description" content="استمع إلى قصص المستكشفين الذين بقوا على المريخ والقمر.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🚀%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#map">تخطَّ إلى المستكشفين</a>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="المستكشفون المنسيون"><span aria-hidden="true">🚀</span> المستكشفون المنسيون</a>
+  <nav aria-label="أقسام الصفحة">
+    <a href="#map">المستكشفون</a>
+    <a href="#numbers">الأرقام</a>
+    <a href="#vs">المخطط والفعلي</a>
+    <a href="#timeline">الخط الزمني</a>
+  </nav>
+  <div class="tools">
+    <button class="icon-btn" id="fsDown" aria-label="تصغير الخط">أ−</button>
+    <button class="icon-btn" id="fsUp" aria-label="تكبير الخط">أ+</button>
+    <button class="icon-btn" id="motionBtn" aria-pressed="false" aria-label="تقليل الحركة">✨</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Forgotten Explorers</p>
+      <h1>المستكشفون <span class="grad">المنسيون</span></h1>
+      <p class="lead">معدات ناسا التي أكملت مهمتها وبقيت على المريخ والقمر. اختر مستكشفًا، استمع إلى قصته بصوته، ثم أجب عن التحدي لتنال نجمتك.</p>
+      <div class="cta">
+        <a class="btn" href="#map" id="startBtn">ابدأ الرحلة ↓</a>
+        <button class="btn ghost" id="randomBtn">🎲 فاجئني بمستكشف</button>
+      </div>
+    </div>
+    <div class="hero-prog" aria-label="تقدمك">
+      <svg viewBox="0 0 120 120" class="ring" role="img" aria-label="حلقة التقدم">
+        <circle cx="60" cy="60" r="52" class="ring-bg"/>
+        <circle cx="60" cy="60" r="52" class="ring-fg" id="ringFg" pathLength="100"/>
+      </svg>
+      <div class="ring-c"><b id="pt">٠ / ٤</b><small id="pLabel">لم تبدأ بعد</small></div>
+    </div>
+  </section>
+
+  <section id="map" class="sec" aria-labelledby="mapH">
+    <div class="sec-head"><h2 id="mapH">اختر مستكشفك</h2><p>عالمان وأربع حكايات. ابدأ من أي مكان تحب.</p></div>
+    <div class="map" id="mapGrid"></div>
+    <p class="note">🗺️ الخريطة تخطيطية وليست بمقياس مسافات حقيقي. الرسوم تعبيرية وليست الشكل الحقيقي للمعدات.</p>
+  </section>
+
+  <section id="numbers" class="sec" aria-labelledby="numH">
+    <div class="sec-head"><h2 id="numH">أرقام لا تُنسى</h2><p>ما حققه هؤلاء المستكشفون يفوق كل التوقعات.</p></div>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section id="vs" class="sec" aria-labelledby="vsH">
+    <div class="sec-head"><h2 id="vsH">المخطط مقابل ما تحقق</h2><p>صُمّمت لمهمات قصيرة… فواصلت أضعاف المتوقع.</p></div>
+    <div class="vs" id="vsBox"></div>
+  </section>
+
+  <section id="timeline" class="sec" aria-labelledby="tlH">
+    <div class="sec-head"><h2 id="tlH">الخط الزمني</h2><p>اضغط على أي حدث لفتح قصة صاحبه.</p></div>
+    <ol class="tl" id="tl"></ol>
+  </section>
+
+  <section id="winSec" class="sec win hide" aria-live="polite">
+    <div class="win-card">
+      <h2>🎉 أكملت الرحلة!</h2>
+      <p>أجبت عن كل أسئلة المستكشفين الأربعة. المستكشفون لم يُنسوا بفضلك! اكتب اسمك لتحصل على شهادتك.</p>
+      <div class="cert-form">
+        <label for="nameIn" class="sr">اسمك</label>
+        <input id="nameIn" maxlength="28" placeholder="اكتب اسمك هنا" autocomplete="name">
+        <button class="btn" id="certBtn">⬇ حمّل الشهادة</button>
+        <button class="btn ghost" id="shareBtn">🔗 شارك الموقع</button>
+      </div>
+      <canvas id="cert" width="1200" height="800" class="cert" aria-label="معاينة الشهادة"></canvas>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>المحتوى مبني على مصادر ناسا الموضحة في نهاية كل قصة. الرسوم تعبيرية.</p>
+  <button class="btn ghost small" id="resetBtn">↺ ابدأ من جديد</button>
+</footer>
+
+<!-- نافذة القصة -->
+<div class="ov" id="ov" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pn" tabindex="-1">
+    <div class="top">
+      <div class="top-title"><span class="top-ic" id="pic" aria-hidden="true"></span><div><h2 id="pn"></h2><small id="ptag"></small></div></div>
+      <div class="top-btns">
+        <button class="icon-btn" id="prevC" aria-label="المستكشف السابق">›</button>
+        <button class="icon-btn" id="nextC" aria-label="المستكشف التالي">‹</button>
+        <button class="x" id="cl" aria-label="إغلاق">✕</button>
+      </div>
+    </div>
+
+    <div class="id" id="idc"></div>
+
+    <div class="stage" id="stage"></div>
+
+    <div class="player" id="player">
+      <div class="p-row">
+        <button class="pbtn" id="play" aria-label="شغّل القصة">▶</button>
+        <div class="p-mid">
+          <div class="wave" id="wave" aria-hidden="true"></div>
+          <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="موضع التشغيل" dir="ltr">
+          <div class="p-time" dir="ltr"><span id="tcur">0:00</span><span id="tdur">0:00</span></div>
+        </div>
+      </div>
+      <div class="p-row sm">
+        <button class="chip" id="back10" aria-label="رجوع 10 ثوان">⟲ ١٠ث</button>
+        <button class="chip" id="fwd10" aria-label="تقديم 10 ثوان">١٠ث ⟳</button>
+        <button class="chip" id="speed" aria-label="سرعة التشغيل">1×</button>
+        <button class="chip" id="stop">⏹ إيقاف</button>
+        <button class="chip" id="skipBtn">أريد التحدي الآن ←</button>
+      </div>
+      <p class="warn" id="tts"></p>
+    </div>
+    <audio id="au" preload="metadata"></audio>
+
+    <div class="story" id="st" aria-live="off"></div>
+    <div class="fact" id="fc" role="status"></div>
+
+    <div id="qz" class="qz hide">
+      <div class="qz-head"><h3>🎯 التحدي</h3><span id="qn" class="qn"></span></div>
+      <h4 id="qq"></h4>
+      <div id="qo" role="group" aria-labelledby="qq"></div>
+      <div class="fb" id="fb" aria-live="polite"></div>
+      <button class="btn hide" id="qNext">السؤال التالي ←</button>
+    </div>
+
+    <div class="reward hide" id="reward">
+      <div class="stars-row" id="rStars"></div>
+      <p id="rTxt"></p>
+      <button class="btn" id="rNext">المستكشف التالي ←</button>
+    </div>
+
+    <div class="src"><b>المصادر:</b><ul id="sr"></ul></div>
+    <div class="panel-foot"><button class="btn ghost small" id="shareOne">🔗 شارك هذه القصة</button></div>
+  </div>
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="scenes.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
